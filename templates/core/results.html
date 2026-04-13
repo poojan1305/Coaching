@@ -1,0 +1,118 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Student Results — Vidya Mandir{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="page-hero-content">
+    <span class="section-label" style="margin-bottom:1rem; display:block;">Academic Record</span>
+    <h1>Student <em>Results</em></h1>
+    <p>SSC &amp; ICSE Board Examination Performance</p>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<form method="GET" action="/results/" id="filterForm">
+  <div class="filters-bar">
+    <div class="filter-group">
+      <span class="filter-label">Board</span>
+      <select name="board" class="filter-select" id="boardFilter">
+        <option value="">All Boards</option>
+        <option value="SSC" {% if board_filter == 'SSC' %}selected{% endif %}>SSC</option>
+        <option value="ICSE" {% if board_filter == 'ICSE' %}selected{% endif %}>ICSE</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Year</span>
+      <select name="year" class="filter-select" id="yearFilter">
+        <option value="">All Years</option>
+        {% for y in years %}
+        <option value="{{ y }}" {% if year_filter == y|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="filter-group">
+      <input type="text" name="search" class="filter-input" id="searchInput"
+        placeholder="Search by name…" value="{{ search_query }}"
+        style="min-width:200px;">
+      <button type="submit" class="filter-btn">Search</button>
+      {% if board_filter or year_filter or search_query %}
+      <a href="/results/" class="filter-clear">Clear filters</a>
+      {% endif %}
+    </div>
+    <div class="results-count">
+      Showing <strong>{{ total_count }}</strong> result{{ total_count|pluralize }}
+    </div>
+  </div>
+</form>
+
+<section class="section" style="padding-top:3rem;">
+  {% if page_obj %}
+  <div class="results-table-wrap">
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student Name</th>
+          <th>Board</th>
+          <th>Year</th>
+          <th>Score</th>
+          <th>Subject</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in page_obj %}
+        <tr {% if s.is_topper %}class="topper-row"{% endif %}>
+          <td style="color:var(--text-light); font-family:'Montserrat',sans-serif; font-size:0.75rem;">
+            {{ forloop.counter0|add:page_obj.start_index }}
+          </td>
+          <td>
+            <span style="font-weight:600; color:var(--text-dark);">{{ s.name }}</span>
+            {% if s.is_topper %}<span class="topper-star">★</span>{% endif %}
+          </td>
+          <td><span class="board-badge {{ s.board|lower }}">{{ s.board }}</span></td>
+          <td style="font-family:'Montserrat',sans-serif; font-size:0.8rem; color:var(--text-mid);">{{ s.year }}</td>
+          <td class="score-cell {% if s.score >= 90 %}score-high{% elif s.score >= 75 %}score-mid{% endif %}">
+            {{ s.score }}%
+          </td>
+          <td style="font-family:'Montserrat',sans-serif; font-size:0.8rem; color:var(--text-light);">
+            {{ s.subject|default:"—" }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINATION -->
+  {% if page_obj.has_other_pages %}
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page=1{% if board_filter %}&board={{ board_filter }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">«</a>
+    <a href="?page={{ page_obj.previous_page_number }}{% if board_filter %}&board={{ board_filter }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">‹</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+    <span class="page-link active">{{ num }}</span>
+    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+    <a href="?page={{ num }}{% if board_filter %}&board={{ board_filter }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">{{ num }}</a>
+    {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}{% if board_filter %}&board={{ board_filter }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">›</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}{% if board_filter %}&board={{ board_filter }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">»</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% else %}
+  <div class="no-results">
+    <div class="no-results-icon">🔍</div>
+    <h3>No results found</h3>
+    <p>Try adjusting your filters or search query.</p>
+    <a href="/results/" style="font-family:'Montserrat',sans-serif; font-size:0.75rem; color:var(--gold); border-bottom:1px solid var(--gold); margin-top:1rem; display:inline-block;">Clear All Filters</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

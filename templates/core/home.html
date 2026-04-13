@@ -1,0 +1,142 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-ornament"></div>
+  <div class="hero-ornament"></div>
+  <div class="hero-ornament"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span>Established 2009 &nbsp;·&nbsp; Mumbai, Maharashtra</span>
+    </div>
+    <h1>Excellence in<br><em>SSC &amp; ICSE</em><br>Education</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">Consistent Results &nbsp;·&nbsp; Strong Foundations &nbsp;·&nbsp; Trusted Guidance</p>
+
+    <div class="counters">
+      <div class="counter-item">
+        <span class="counter-num number" data-target="{{ years_active }}" data-suffix="+">0+</span>
+        <span class="label">Years of Experience</span>
+      </div>
+      <div class="counter-divider"></div>
+      <div class="counter-item">
+        <span class="counter-num number" data-target="{{ total_students }}" data-suffix="+">0+</span>
+        <span class="label">Students Taught</span>
+      </div>
+      <div class="counter-divider"></div>
+      <div class="counter-item">
+        <span class="counter-num number" data-target="{{ top_scores }}" data-suffix="+">0+</span>
+        <span class="label">Top Scores Achieved</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- FEATURED TOPPERS -->
+{% if toppers %}
+<section class="section section-alt">
+  <div class="section-header fade-in">
+    <span class="section-label">Academic Excellence</span>
+    <h2 class="section-title">Our <em>Distinguished</em> Toppers</h2>
+    <div class="section-rule"></div>
+    <p class="section-sub">Students who achieved exceptional results under our guidance</p>
+  </div>
+  <div class="toppers-grid">
+    {% for s in toppers %}
+    <div class="topper-card fade-in fade-in-delay-{{ forloop.counter }}">
+      {% if s.rank %}
+      <div class="topper-rank">
+        {% if s.rank == 1 %}🥇{% elif s.rank == 2 %}🥈{% elif s.rank == 3 %}🥉{% else %}#{{ s.rank }}{% endif %}
+      </div>
+      {% endif %}
+      <div class="topper-avatar">
+        {% if s.photo %}<img src="{{ s.photo.url }}" alt="{{ s.name }}">{% else %}{{ s.name|first }}{% endif %}
+      </div>
+      <div class="topper-name">{{ s.name }}</div>
+      <div class="topper-meta">{{ s.year }}</div>
+      <div class="topper-score">{{ s.score }}<span>%</span></div>
+      <div class="board-badge {{ s.board|lower }}">{{ s.board }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="text-align:center; margin-top:3rem">
+    <a href="/results/" style="font-family:'Montserrat',sans-serif; font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; color:var(--navy); border-bottom:1px solid var(--gold); padding-bottom:3px;">View All Results →</a>
+  </div>
+</section>
+{% endif %}
+
+<!-- WHY VIDYA MANDIR -->
+<section class="section section-dark">
+  <div class="section-header fade-in">
+    <span class="section-label">Our Approach</span>
+    <h2 class="section-title light">Why Students <em>Excel</em> Here</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:2rem; max-width:1100px; margin:0 auto;">
+    {% for item in "1234"|make_list %}
+    <div class="fade-in" style="border:1px solid rgba(201,168,76,0.15); padding:2.5rem; background:rgba(255,255,255,0.03); transition:all 0.35s; position:relative; overflow:hidden;">
+      {% if forloop.counter == 1 %}
+      <div style="font-size:2rem; margin-bottom:1rem;">📚</div>
+      <h3 style="color:#fff; font-size:1.3rem; margin-bottom:0.8rem; font-weight:400;">Personalised Attention</h3>
+      <p style="font-family:'Montserrat',sans-serif; font-size:0.82rem; color:rgba(255,255,255,0.5); line-height:1.8;">Small batch sizes ensure every student receives individual focus and customised academic support.</p>
+      {% elif forloop.counter == 2 %}
+      <div style="font-size:2rem; margin-bottom:1rem;">🎯</div>
+      <h3 style="color:#fff; font-size:1.3rem; margin-bottom:0.8rem; font-weight:400;">Concept Clarity</h3>
+      <p style="font-family:'Montserrat',sans-serif; font-size:0.82rem; color:rgba(255,255,255,0.5); line-height:1.8;">Deep conceptual understanding over rote memorisation — building knowledge that lasts beyond examinations.</p>
+      {% elif forloop.counter == 3 %}
+      <div style="font-size:2rem; margin-bottom:1rem;">📊</div>
+      <h3 style="color:#fff; font-size:1.3rem; margin-bottom:0.8rem; font-weight:400;">Proven Track Record</h3>
+      <p style="font-family:'Montserrat',sans-serif; font-size:0.82rem; color:rgba(255,255,255,0.5); line-height:1.8;">Consistent distinction-level results across both SSC and ICSE boards over fifteen years of teaching.</p>
+      {% else %}
+      <div style="font-size:2rem; margin-bottom:1rem;">🤝</div>
+      <h3 style="color:#fff; font-size:1.3rem; margin-bottom:0.8rem; font-weight:400;">Parent Partnership</h3>
+      <p style="font-family:'Montserrat',sans-serif; font-size:0.82rem; color:rgba(255,255,255,0.5); line-height:1.8;">Regular progress updates and open communication to ensure parents are always informed and involved.</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- TESTIMONIALS PREVIEW -->
+{% if testimonials %}
+<section class="section section-alt">
+  <div class="section-header fade-in">
+    <span class="section-label">Student Voices</span>
+    <h2 class="section-title">What Our <em>Students</em> Say</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="testimonials-grid" style="max-width:1000px; margin:0 auto;">
+    {% for t in testimonials %}
+    <div class="testimonial-card fade-in" style="background:var(--white); border-color:var(--border);">
+      <div class="quote-mark" style="color:var(--gold); opacity:0.2;">"</div>
+      <p class="testimonial-text" style="color:var(--text-mid);">{{ t.message }}</p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:var(--navy); color:var(--gold-light);">
+          {% if t.photo %}<img src="{{ t.photo.url }}" alt="{{ t.name }}">{% else %}{{ t.name|first }}{% endif %}
+        </div>
+        <div>
+          <div class="author-name" style="color:var(--text-dark);">{{ t.name }}</div>
+          <div class="author-meta">{{ t.board }} · {{ t.year }}{% if t.score %} · {{ t.score }}%{% endif %}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="text-align:center; margin-top:3rem">
+    <a href="/testimonials/" style="font-family:'Montserrat',sans-serif; font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; color:var(--navy); border-bottom:1px solid var(--gold); padding-bottom:3px;">Read All Testimonials →</a>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

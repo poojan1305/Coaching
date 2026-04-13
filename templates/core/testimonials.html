@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+{% block title %}Student Testimonials — Vidya Mandir{% endblock %}
+{% block content %}
+<div class="page-hero" style="background:var(--navy);">
+  <div class="page-hero-content">
+    <span class="section-label" style="margin-bottom:1rem; display:block;">Student Voices</span>
+    <h1>What Our <em>Students</em> Say</h1>
+    <p>Honest reflections from students who've walked this journey</p>
+  </div>
+</div>
+
+<section class="section section-dark">
+  {% if testimonials %}
+  <div class="testimonials-grid" style="max-width:1100px; margin:0 auto;">
+    {% for t in testimonials %}
+    <div class="testimonial-card fade-in">
+      <div class="quote-mark">"</div>
+      <p class="testimonial-text">{{ t.message }}</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">
+          {% if t.photo %}<img src="{{ t.photo.url }}" alt="{{ t.name }}">{% else %}{{ t.name|first }}{% endif %}
+        </div>
+        <div>
+          <div class="author-name">{{ t.name }}</div>
+          <div class="author-meta">{{ t.board }} · {{ t.year }}{% if t.score %} · {{ t.score }}%{% endif %}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="no-results" style="color:rgba(255,255,255,0.4);">
+    <div class="no-results-icon">💬</div>
+    <h3 style="color:rgba(255,255,255,0.6);">Testimonials coming soon</h3>
+    <p>Check back shortly.</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

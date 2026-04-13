@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+{% block title %}Contact — Vidya Mandir{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="page-hero-content">
+    <span class="section-label" style="margin-bottom:1rem; display:block;">Get in Touch</span>
+    <h1>Contact <em>Us</em></h1>
+    <p>We respond to every query personally</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="contact-layout">
+    <!-- INFO -->
+    <div class="contact-info fade-in">
+      <h2>We'd Love to <em>Hear</em> From You</h2>
+      <p>
+        Whether you're a parent seeking guidance, a student with a question, or simply curious about our approach — please reach out. We believe every conversation begins with listening.
+      </p>
+      <div class="contact-details">
+        <div class="contact-detail">
+          <div class="detail-icon">📍</div>
+          <div class="detail-text">
+            <div class="dt">Location</div>
+            <div class="dv">Dadar, Mumbai — 400 014<br>Maharashtra, India</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon">📞</div>
+          <div class="detail-text">
+            <div class="dt">Phone</div>
+            <div class="dv">+91 98XXX XXXXX</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon">✉️</div>
+          <div class="detail-text">
+            <div class="dt">Email</div>
+            <div class="dv">contact@vidyamandir.edu.in</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon">🕐</div>
+          <div class="detail-text">
+            <div class="dt">Hours</div>
+            <div class="dv">Mon – Sat: 9:00 AM – 7:00 PM<br>Sunday: By appointment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="contact-form-wrap fade-in fade-in-delay-1">
+      <h3 class="form-title">Send a Message</h3>
+      <p class="form-sub">Fields marked <span style="color:var(--gold)">*</span> are required</p>
+      <form method="POST" action="/contact/">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label">Name <span class="form-required">*</span></label>
+          <input type="text" name="name" class="form-control" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number <span class="form-required">*</span></label>
+          <input type="tel" name="phone" class="form-control" placeholder="+91 XXXXX XXXXX" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" class="form-control" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message <span class="form-required">*</span></label>
+          <textarea name="message" class="form-control" placeholder="Tell us how we can help you…" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
